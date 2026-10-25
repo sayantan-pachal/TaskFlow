@@ -1,27 +1,34 @@
-
 import React from "react";
+import { useLocation } from "react-router-dom";
 import {
   Search,
   ChevronDown,
   UserRound,
   Bell,
 } from "lucide-react";
-import ThemeToggle from "../../../components/Others/ThemeToggle";
+import ThemeToggle from "../Others/ThemeToggle";
 
 export default function DashboardHeader() {
+  const { pathname } = useLocation();
+  const isDashboard = pathname === "/" || pathname === "/dashboard";
+
   return (
     <header className="mb-6">
       <div className="flex items-center justify-between gap-3">
-        {/* Greeting */}
+        {/* Greeting — Only rendered on Dashboard / Home */}
         <div className="min-w-0 flex-1">
-          <h1 className="flex flex-wrap items-center gap-1.5 text-xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-2xl lg:text-2xl">
-            <span>Good morning, Sayantan</span>
-            <span className="origin-bottom-right animate-wave">👋</span>
-          </h1>
+          {isDashboard && (
+            <>
+              <h1 className="flex flex-wrap items-center gap-1.5 text-xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-2xl lg:text-2xl">
+                <span>Good morning, Sayantan</span>
+                <span className="origin-bottom-right animate-wave">👋</span>
+              </h1>
 
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 sm:text-base">
-            Stay focused. You're doing great!
-          </p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 sm:text-base">
+                Stay focused. You're doing great!
+              </p>
+            </>
+          )}
         </div>
 
         {/* Desktop actions */}
@@ -52,7 +59,7 @@ export default function DashboardHeader() {
 
 function SearchBar() {
   return (
-    <label className="relative block w-full sm:w-56 lg:w-64">
+    <label className="relative hidden md:block w-full sm:w-56 lg:w-64">
       <Search
         size={18}
         aria-hidden="true"
