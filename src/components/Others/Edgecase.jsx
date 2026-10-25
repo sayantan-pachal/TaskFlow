@@ -6,7 +6,7 @@ function Edgecase() {
     const navigate = useNavigate();
 
     return (
-        <div className="h-dvh w-full bg-white dark:bg-slate-950/80 flex flex-col items-center justify-center font-dm overflow-hidden animate-in fade-in duration-500">
+        <div className="h-dvh w-full transparent flex flex-col items-center justify-center font-dm overflow-hidden animate-in fade-in duration-500">
             
             {/* Main Illustration - Constrained dynamically by screen height */}
             <img

@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useCallback } from "react";
 import { CircleCheck, CircleX } from "lucide-react";
 
@@ -10,10 +9,10 @@ export const ToastProvider = ({ children }) => {
     const showToast = useCallback((message, type = "error") => {
         setToast({ message, type, visible: true });
 
-        // Auto-hide after 4 seconds
+        // Auto-hide after 3 seconds (reduced from 4 for snappier UX)
         setTimeout(() => {
             setToast((prev) => ({ ...prev, visible: false }));
-        }, 4000);
+        }, 3000);
     }, []);
 
     return (
@@ -22,13 +21,24 @@ export const ToastProvider = ({ children }) => {
 
             {/* Global Toast UI */}
             {toast.visible && (
-                <div className={`fixed top-20 left-1/2 -translate-x-1/2 z-[9999] px-6 py-3 rounded-xl shadow-2xl font-semibold animate-toastDrop text-white flex items-center gap-2
-                ${toast.type === "success" ? "bg-gradient-to-r from-green-500 to-emerald-600" : "bg-[linear-gradient(90deg,#f53123,#60a5fa)]"}`}>
-                    {toast.type === "success" ? (
-                        <CircleCheck className="w-5 h-5 text-white" />
-                    ) : (
-                        <CircleX className="w-5 h-5 text-white" />
-                    )} {toast.message}
+                <div className="fixed top-6 left-1/2 -translate-x-1/2 z-9999 px-4 py-3 min-w-70 max-w-[90vw] rounded-2xl shadow-2xl animate-toastDrop flex items-center gap-3 bg-white dark:bg-[#161b22] border border-slate-200 dark:border-gray-800">
+                    
+                    {/* Themed Icon Container */}
+                    <div className={`flex items-center justify-center shrink-0 w-8 h-8 rounded-full ${
+                        toast.type === "success" 
+                        ? "bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400" 
+                        : "bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400"
+                    }`}>
+                        {toast.type === "success" ? (
+                            <CircleCheck size={18} strokeWidth={2.5} />
+                        ) : (
+                            <CircleX size={18} strokeWidth={2.5} />
+                        )}
+                    </div>
+
+                    <span className="text-sm font-semibold text-slate-800 dark:text-gray-100">
+                        {toast.message}
+                    </span>
                 </div>
             )}
         </ToastContext.Provider>

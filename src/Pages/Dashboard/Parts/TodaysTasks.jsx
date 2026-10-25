@@ -1,5 +1,6 @@
 import React from 'react';
 import { CalendarDays, Check } from 'lucide-react';
+import { NavLink } from "react-router-dom";
 
 const tasksData = [
     { id: 1, title: "Complete web development assignment", category: "Study", categoryColor: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400", priority: "High", priorityColor: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400", date: "Oct 25, 2025", status: "In Progress", statusColor: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400", checked: true },
@@ -22,9 +23,9 @@ export default function TodaysTasks() {
                         <p className="text-xs text-slate-500 dark:text-gray-400">Here's what you need to do today</p>
                     </div>
                 </div>
-                <button className="text-xs font-medium text-slate-700 dark:text-gray-300 bg-slate-50 dark:bg-gray-800/50 hover:bg-slate-100 dark:hover:bg-gray-800 border border-slate-200 dark:border-gray-700 px-3 py-1.5 rounded-lg transition-colors">
+                <NavLink to="/tasks" className="text-xs font-medium text-slate-700 dark:text-gray-300 bg-slate-50 dark:bg-gray-800/50 hover:bg-slate-100 dark:hover:bg-gray-800 border border-slate-200 dark:border-gray-700 px-3 py-1.5 rounded-lg transition-colors">
                     View All
-                </button>
+                </NavLink>
             </div>
 
             {/* Desktop Table Headers (Hidden on Mobile) */}

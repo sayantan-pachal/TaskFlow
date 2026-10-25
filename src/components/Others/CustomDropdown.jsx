@@ -8,7 +8,8 @@ const CustomDropdown = ({
     options, 
     disabled = false,
     error = null,
-    required = false 
+    required = false,
+    name
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -27,9 +28,9 @@ const CustomDropdown = ({
     }, []);
 
     return (
-        <div className="w-full" ref={dropdownRef}>
+        <div className="w-full relative" ref={dropdownRef}>
             {label && (
-                <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-gray-300 mb-1.5 tracking-wide">
                     {label} {required && <span className="text-red-500">*</span>}
                 </label>
             )}
@@ -42,34 +43,34 @@ const CustomDropdown = ({
                     disabled={disabled}
                     className={`flex w-full items-center justify-between gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-all ${
                         error
-                            ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/10'
+                            ? 'border-red-300 dark:border-red-500/50 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400'
                             : isOpen
-                            ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-purple-500 dark:ring-purple-500/20 bg-white dark:bg-gray-800'
-                            : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
-                    } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} ${isOpen ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}
+                            ? 'border-blue-500 ring-2 ring-blue-500/20 bg-white dark:bg-[#161b22] text-slate-900 dark:text-white'
+                            : 'border-slate-200 dark:border-gray-800 bg-white dark:bg-[#161b22] text-slate-700 dark:text-gray-200 hover:border-slate-300 dark:hover:border-gray-700'
+                    } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                     <span className="truncate">{selectedOption?.label || 'Select an option'}</span>
                     <ChevronDown
                         size={16}
-                        className={`text-gray-400 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180' : ''}`}
+                        className={`text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-blue-500' : ''}`}
                     />
                 </button>
 
                 {/* Dropdown Menu */}
                 {isOpen && (
-                    <div className="absolute z-50 mt-2 w-full animate-in fade-in zoom-in-95 duration-200 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-1.5 shadow-xl">
+                    <div className="absolute z-50 mt-2 w-full animate-in fade-in zoom-in-95 duration-200 rounded-xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-[#161b22] p-1.5 shadow-xl shadow-slate-200/20 dark:shadow-black/40">
                         {options?.map((option) => (
                             <button
                                 key={option.value}
                                 type="button"
                                 onClick={() => {
-                                    onChange({ target: { name: label?.toLowerCase() || 'status', value: option.value } });
+                                    onChange({ target: { name: name || label?.toLowerCase() || 'status', value: option.value } });
                                     setIsOpen(false);
                                 }}
-                                className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm transition-all ${
+                                className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-all ${
                                     value === option.value
-                                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-lg hover:shadow-blue-500/50 dark:from-purple-500 dark:to-pink-500 font-semibold'
-                                        : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700/50'
+                                        ? 'bg-blue-50 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 font-semibold'
+                                        : 'text-slate-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-gray-800/50'
                                 }`}
                             >
                                 <span className="text-left">{option.label}</span>
@@ -81,7 +82,7 @@ const CustomDropdown = ({
             </div>
 
             {error && (
-                <p className="text-red-500 text-xs mt-1">{error}</p>
+                <p className="text-red-500 dark:text-red-400 text-xs mt-1.5 font-medium">{error}</p>
             )}
         </div>
     );

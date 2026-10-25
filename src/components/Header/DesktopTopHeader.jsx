@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import ThemeToggle from "../Others/ThemeToggle";
 
+import { NavLink } from "react-router-dom";
+
 export default function DashboardHeader() {
   const { pathname } = useLocation();
   const isDashboard = pathname === "/" || pathname === "/dashboard";
@@ -79,20 +81,15 @@ function SearchBar() {
 
 function ProfileButton() {
   return (
-    <button
-      type="button"
-      aria-label="Open user profile"
-      className="flex h-10 shrink-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-2.5 text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-    >
-      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
-        <UserRound size={17} />
-      </span>
-
-      <ChevronDown
-        size={15}
-        className="text-slate-400"
-        aria-hidden="true"
-      />
-    </button>
+    <NavLink
+  to="/profile"
+  aria-label="Open user profile"
+  className="flex h-10 shrink-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-2.5 text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+>
+  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
+    <UserRound size={17} />
+  </span>
+  <ChevronDown size={15} className="text-slate-400" />
+</NavLink>
   );
 }

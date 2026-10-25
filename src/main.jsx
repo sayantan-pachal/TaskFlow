@@ -6,6 +6,9 @@ import Layout from './Layout.jsx'
 import Dashboard from './Pages/Dashboard/Dashboard.jsx'
 import MyTasks from './Pages/MyTasks/MyTasks.jsx'
 import Calendar from './Pages/Calendar/Calendar.jsx'
+import Statistics from './Pages/Stats/Statistics.jsx'
+import Profile from './Pages/Others/Profile.jsx'
+import Settings from './Pages/Others/Settings.jsx'
 import { ToastProvider } from "./components/Others/ToastContext.jsx";
 import Edgecase from './components/Others/Edgecase.jsx'
 
@@ -15,6 +18,9 @@ const router = createBrowserRouter(
       <Route index element={<Dashboard />} />
       <Route path="tasks" element={<MyTasks />} />
       <Route path="calendar" element={<Calendar />} />
+      <Route path="statistics" element={<Statistics />} />
+      <Route path="profile" element={<Profile />} />
+      <Route path="settings" element={<Settings />} />
       <Route path="*" element={<Edgecase />} />
     </Route>
   )

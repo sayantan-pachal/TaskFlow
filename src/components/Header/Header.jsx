@@ -41,7 +41,7 @@ export default function Header() {
             
             {/* Logo Section */}
             <div>
-                <div className="flex items-center gap-3 px-2 mb-8 mt-2">
+                <div className="flex items-center gap-2 px-2 mb-8 mt-2">
                     <img
                         src="/favicon.svg"
                         alt="TaskFlow Logo"
