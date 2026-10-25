@@ -1,7 +1,28 @@
 import React from 'react';
 import { CheckCircle2, Clock, TrendingUp, CheckSquare } from 'lucide-react';
+import { useTasks } from '../../../context/TaskContext';
 
 export default function StatsOverviewCards() {
+    const { tasks } = useTasks();
+
+    const totalTasks = tasks.length;
+    const completedTasks = tasks.filter((t) => t.status === 'Completed').length;
+    const pendingTasks = totalTasks - completedTasks;
+    const completionRate = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+    const pendingRate = totalTasks === 0 ? 0 : 100 - completionRate;
+
+    const todayStr = new Date().toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    });
+    const todayIso = new Date().toISOString().split('T')[0];
+    const todayCount = tasks.filter((t) => t.date === todayStr || t.rawDate === todayIso).length;
+
+    // Circumference for r=17 is 2 * Math.PI * 17 ≈ 106.8
+    const circumference = 106.8;
+    const strokeDashoffset = circumference - (circumference * completionRate) / 100;
+
     return (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 md:gap-5 mb-6">
             {/* 1. Total Tasks */}
@@ -15,10 +36,10 @@ export default function StatsOverviewCards() {
                             Total Tasks
                         </p>
                         <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mt-0.5">
-                            12
+                            {totalTasks}
                         </h3>
                         <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
-                            ↑ 2 today
+                            ↑ {todayCount} today
                         </p>
                     </div>
                 </div>
@@ -35,10 +56,10 @@ export default function StatsOverviewCards() {
                             Completed
                         </p>
                         <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mt-0.5">
-                            7
+                            {completedTasks}
                         </h3>
                         <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
-                            ↑ 58%
+                            ↑ {completionRate}%
                         </p>
                     </div>
                 </div>
@@ -55,10 +76,10 @@ export default function StatsOverviewCards() {
                             Pending
                         </p>
                         <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mt-0.5">
-                            5
+                            {pendingTasks}
                         </h3>
                         <p className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 mt-1">
-                            ↑ 42%
+                            ↑ {pendingRate}%
                         </p>
                     </div>
                 </div>
@@ -75,7 +96,7 @@ export default function StatsOverviewCards() {
                             Completion Rate
                         </p>
                         <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mt-1">
-                            58%
+                            {completionRate}%
                         </h3>
                     </div>
                 </div>
@@ -96,10 +117,10 @@ export default function StatsOverviewCards() {
                             cy="22"
                             r="17"
                             fill="none"
-                            className="stroke-blue-600 dark:stroke-blue-500"
+                            className="stroke-blue-600 dark:stroke-blue-500 transition-all duration-700 ease-out"
                             strokeWidth="4.5"
-                            strokeDasharray="106.8"
-                            strokeDashoffset="44.8"
+                            strokeDasharray={circumference}
+                            strokeDashoffset={strokeDashoffset}
                             strokeLinecap="round"
                         />
                     </svg>

@@ -22,7 +22,7 @@ export default function DashboardHeader() {
           {isDashboard && (
             <>
               <h1 className="flex flex-wrap items-center gap-1.5 text-xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-2xl lg:text-2xl">
-                <span>Good morning, Sayantan</span>
+                <span>Hello, Buddy</span>
                 <span className="origin-bottom-right animate-wave">👋</span>
               </h1>
 

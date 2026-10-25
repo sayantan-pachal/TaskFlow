@@ -4,6 +4,7 @@ import MobileTopBar from './components/Header/MobileTopBar'
 import MobileBottomNav from './components/Header/MobileBottomNav'
 import DashboardHeader from "./components/Header/DesktopTopHeader";
 import Footer from './components/Footer/Footer'
+import TaskModal from './components/Modal/AddTaskModal'
 import { Outlet } from 'react-router-dom'
 
 function Layout() {
@@ -28,6 +29,7 @@ function Layout() {
                         <Footer />
                     </div>
                 </main>
+                <TaskModal />
 
                 {/* Mobile Bottom Navigation (Hidden on desktop devices) */}
                 <MobileBottomNav />

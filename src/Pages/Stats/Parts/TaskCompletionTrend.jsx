@@ -1,16 +1,68 @@
-import React from 'react';
-
-const X_LABELS = [
-    { full: 'Oct 20', short: 'Oct 20' },
-    { full: 'Oct 21', short: '21' },
-    { full: 'Oct 22', short: '22' },
-    { full: 'Oct 23', short: '23' },
-    { full: 'Oct 24', short: '24' },
-    { full: 'Oct 25', short: '25' },
-    { full: 'Oct 26', short: '26' },
-];
+import React, { useMemo } from 'react';
+import { useTasks } from '../../../context/TaskContext';
 
 export default function TaskCompletionTrend() {
+    const { tasks } = useTasks();
+
+    const totalTasks = tasks.length;
+    const completedTasks = tasks.filter((t) => t.status === 'Completed').length;
+    const completionRate = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+
+    // Donut circumference for r=46 is 2 * Math.PI * 46 ≈ 289
+    const donutCircumference = 289;
+    const donutOffset = donutCircumference - (donutCircumference * completionRate) / 100;
+
+    // Build 7-day window ending today and compute SVG coordinates
+    const { daysData, completedPoints, pendingPoints, completedArea, pendingArea } = useMemo(() => {
+        const days = [];
+        const today = new Date();
+
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(today.getDate() - i);
+
+            const iso = d.toISOString().split('T')[0];
+            const displayStr = d.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+            });
+            const fullLabel = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const shortLabel = i === 6 ? fullLabel : String(d.getDate());
+
+            const dayTasks = tasks.filter((t) => t.rawDate === iso || t.date === displayStr);
+            const compCount = dayTasks.filter((t) => t.status === 'Completed').length;
+            const pendCount = dayTasks.length - compCount;
+
+            days.push({
+                full: fullLabel,
+                short: shortLabel,
+                completed: compCount,
+                pending: pendCount,
+            });
+        }
+
+        // Convert count (0-15 scale) to SVG Y coordinate (height 120, top pad 10, bottom 110)
+        const toY = (count) => Math.max(10, Math.min(110, 110 - (count / 15) * 100));
+
+        const cPts = days.map((d, idx) => [idx * 100, toY(d.completed)]);
+        const pPts = days.map((d, idx) => [idx * 100, toY(d.pending)]);
+
+        const cLine = cPts.map(([x, y]) => `${x},${y}`).join(' ');
+        const pLine = pPts.map(([x, y]) => `${x},${y}`).join(' ');
+
+        const cArea = `M ${cPts.map(([x, y]) => `${x},${y}`).join(' L ')} L 600,120 L 0,120 Z`;
+        const pArea = `M ${pPts.map(([x, y]) => `${x},${y}`).join(' L ')} L 600,120 L 0,120 Z`;
+
+        return {
+            daysData: days,
+            completedPoints: { raw: cPts, str: cLine },
+            pendingPoints: { raw: pPts, str: pLine },
+            completedArea: cArea,
+            pendingArea: pArea,
+        };
+    }, [tasks]);
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left: 7-Day Line Chart Card */}
@@ -76,15 +128,9 @@ export default function TaskCompletionTrend() {
                             </defs>
 
                             {/* Completed Area Fill */}
-                            <path
-                                d="M 0,90 L 100,64 L 200,68 L 300,40 L 400,52 L 500,28 L 600,36 L 600,120 L 0,120 Z"
-                                fill="url(#emeraldArea)"
-                            />
+                            <path d={completedArea} fill="url(#emeraldArea)" />
                             {/* Pending Area Fill */}
-                            <path
-                                d="M 0,105 L 100,88 L 200,78 L 300,82 L 400,66 L 500,82 L 600,70 L 600,120 L 0,120 Z"
-                                fill="url(#amberArea)"
-                            />
+                            <path d={pendingArea} fill="url(#amberArea)" />
 
                             {/* Completed Stroke Line */}
                             <polyline
@@ -93,7 +139,7 @@ export default function TaskCompletionTrend() {
                                 strokeWidth="2.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                points="0,90 100,64 200,68 300,40 400,52 500,28 600,36"
+                                points={completedPoints.str}
                             />
                             {/* Pending Stroke Line */}
                             <polyline
@@ -102,39 +148,23 @@ export default function TaskCompletionTrend() {
                                 strokeWidth="2.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                points="0,105 100,88 200,78 300,82 400,66 500,82 600,70"
+                                points={pendingPoints.str}
                             />
 
                             {/* Completed Data Dots */}
-                            {[
-                                [0, 90],
-                                [100, 64],
-                                [200, 68],
-                                [300, 40],
-                                [400, 52],
-                                [500, 28],
-                                [600, 36],
-                            ].map(([cx, cy], idx) => (
+                            {completedPoints.raw.map(([cx, cy], idx) => (
                                 <circle key={`c-${idx}`} cx={cx} cy={cy} r="4" fill="#10b981" />
                             ))}
 
                             {/* Pending Data Dots */}
-                            {[
-                                [0, 105],
-                                [100, 88],
-                                [200, 78],
-                                [300, 82],
-                                [400, 66],
-                                [500, 82],
-                                [600, 70],
-                            ].map(([cx, cy], idx) => (
+                            {pendingPoints.raw.map(([cx, cy], idx) => (
                                 <circle key={`p-${idx}`} cx={cx} cy={cy} r="4" fill="#f59e0b" />
                             ))}
                         </svg>
 
                         {/* X-Axis Labels */}
                         <div className="absolute bottom-0 left-0 right-0 flex justify-between text-[11px] font-medium text-slate-400 dark:text-gray-500">
-                            {X_LABELS.map((item) => (
+                            {daysData.map((item) => (
                                 <span key={item.full}>
                                     <span className="hidden sm:inline">{item.full}</span>
                                     <span className="sm:hidden">{item.short}</span>
@@ -145,7 +175,7 @@ export default function TaskCompletionTrend() {
                 </div>
             </div>
 
-            {/* Right: Desktop 58% Tasks Completed Donut Card */}
+            {/* Right: Desktop Tasks Completed Donut Card */}
             <div className="hidden lg:flex lg:col-span-4 bg-white dark:bg-[#161b22] border border-slate-200/90 dark:border-gray-800 rounded-2xl p-5 flex-col items-center justify-center shadow-sm transition-colors">
                 <div className="relative w-36 h-36 mb-3 flex items-center justify-center">
                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
@@ -170,13 +200,14 @@ export default function TaskCompletionTrend() {
                             fill="none"
                             stroke="url(#donutGrad)"
                             strokeWidth="12"
-                            strokeDasharray="289"
-                            strokeDashoffset="121.4"
+                            strokeDasharray={donutCircumference}
+                            strokeDashoffset={donutOffset}
                             strokeLinecap="round"
+                            className="transition-all duration-700 ease-out"
                         />
                     </svg>
                     <span className="absolute text-2xl font-bold text-slate-900 dark:text-white">
-                        58%
+                        {completionRate}%
                     </span>
                 </div>
                 <p className="text-xs font-semibold text-slate-600 dark:text-gray-300">

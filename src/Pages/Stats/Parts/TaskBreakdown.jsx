@@ -1,14 +1,35 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useTasks } from '../../../context/TaskContext';
 
-const categories = [
-    { name: 'Study', count: 4, percent: 33, color: 'bg-blue-600', dot: 'bg-blue-600' },
-    { name: 'Development', count: 3, percent: 25, color: 'bg-indigo-500', dot: 'bg-indigo-500' },
-    { name: 'Design', count: 2, percent: 17, color: 'bg-emerald-500', dot: 'bg-emerald-500' },
-    { name: 'Personal', count: 2, percent: 17, color: 'bg-amber-500', dot: 'bg-amber-500' },
-    { name: 'Others', count: 1, percent: 8, color: 'bg-slate-400', dot: 'bg-slate-400' },
+const BASE_CATEGORIES = [
+    { name: 'Academics', color: 'bg-blue-600', dot: 'bg-blue-600' },
+    { name: 'GDG', color: 'bg-indigo-500', dot: 'bg-indigo-500' },
+    { name: 'Personal', color: 'bg-emerald-500', dot: 'bg-emerald-500' },
+    { name: 'Sample', color: 'bg-amber-500', dot: 'bg-amber-500' },
+    { name: 'Others', color: 'bg-slate-400', dot: 'bg-slate-400' },
 ];
 
 export default function TaskBreakdown() {
+    const { tasks } = useTasks();
+
+    const categories = useMemo(() => {
+        const total = tasks.length;
+        const knownNames = ['academics', 'gdg', 'personal', 'sample'];
+
+        return BASE_CATEGORIES.map((cat) => {
+            const count = tasks.filter((t) => {
+                const c = (t.category || '').toLowerCase();
+                if (cat.name === 'Others') {
+                    return !knownNames.includes(c);
+                }
+                return c === cat.name.toLowerCase();
+            }).length;
+
+            const percent = total === 0 ? 0 : Math.round((count / total) * 100);
+            return { ...cat, count, percent };
+        });
+    }, [tasks]);
+
     return (
         <div className="bg-white dark:bg-[#161b22] border border-slate-200/90 dark:border-gray-800 rounded-2xl p-5 shadow-sm transition-colors h-full">
             <div className="mb-5">
@@ -35,8 +56,8 @@ export default function TaskBreakdown() {
                         <div className="col-span-5">
                             <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-gray-800 overflow-hidden">
                                 <div
-                                    className={`h-full rounded-full ${cat.color}`}
-                                    style={{ width: `${cat.percent * 2.2}%` }}
+                                    className={`h-full rounded-full transition-all duration-500 ${cat.color}`}
+                                    style={{ width: `${cat.percent}%` }}
                                 />
                             </div>
                         </div>

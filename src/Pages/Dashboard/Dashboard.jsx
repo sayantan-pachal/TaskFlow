@@ -12,9 +12,12 @@ export default function Dashboard() {
 
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                
+
                 {/* Left Column (Spans 2 columns on large screens) */}
                 <div className="xl:col-span-2 flex flex-col">
+                    <div className="lg:hidden">
+                        <DailyTip />
+                    </div>
                     <StatsCards />
                     <TaskOverview />
                     <TodaysTasks />
@@ -22,11 +25,13 @@ export default function Dashboard() {
 
                 {/* Right Column (Sidebar Area) */}
                 <div className="xl:col-span-1 flex flex-col">
-                    <DailyTip />
+                    <div className="hidden lg:block">
+                        <DailyTip />
+                    </div>
                     <QuickActions />
                     <RecentActivity />
                 </div>
-                
+
             </div>
         </div>
     );

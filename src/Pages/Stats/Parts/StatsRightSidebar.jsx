@@ -1,22 +1,23 @@
-// src/components/Statistics/StatsRightSidebar.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Lightbulb,
     Zap,
     Plus,
     Download,
     Sparkles,
-    BarChart2,
+    ListTodo,
     ChevronRight,
+    Loader2,
 } from 'lucide-react';
-
-const secondaryActions = [
-    { label: 'Import Sample Tasks', Icon: Download },
-    { label: 'Get New Tip', Icon: Sparkles },
-    { label: 'View Statistics', Icon: BarChart2 },
-];
+import { useTasks } from '../../../context/TaskContext';
+import { useQuote } from '../../../context/QuoteContext';
 
 export default function StatsRightSidebar() {
+    const navigate = useNavigate();
+    const { openTaskModal, importSampleTasks, isImporting } = useTasks();
+    const { quote, isLoading: isQuoteLoading, refreshQuote } = useQuote();
+
     return (
         <div className="hidden xl:flex flex-col gap-6">
             {/* 1. Productivity Tips Card */}
@@ -29,12 +30,21 @@ export default function StatsRightSidebar() {
                         </h3>
                     </div>
 
-                    <p className="text-xs font-medium italic text-slate-700 dark:text-gray-200 leading-relaxed">
-                        "Progress is more important than perfection."
-                    </p>
-                    <p className="text-[11px] font-medium text-slate-500 dark:text-blue-300 mt-1.5">
-                        — Keep going!
-                    </p>
+                    {isQuoteLoading ? (
+                        <div className="space-y-2 py-1 animate-pulse">
+                            <div className="h-4 bg-blue-200/60 dark:bg-slate-700/60 rounded w-5/6" />
+                            <div className="h-3 bg-blue-200/40 dark:bg-slate-700/40 rounded w-1/3" />
+                        </div>
+                    ) : (
+                        <>
+                            <p className="text-xs font-medium italic text-slate-700 dark:text-gray-200 leading-relaxed">
+                                &ldquo;{quote}&rdquo;
+                            </p>
+                            <p className="text-[11px] font-medium text-slate-500 dark:text-blue-300 mt-1.5">
+                                — Keep going!
+                            </p>
+                        </>
+                    )}
                 </div>
 
                 {/* Decorative Mountain Vector */}
@@ -70,25 +80,54 @@ export default function StatsRightSidebar() {
                 <div className="flex flex-col gap-2.5">
                     <button
                         type="button"
-                        className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2.5 px-4 rounded-xl text-xs font-semibold shadow-md shadow-blue-600/20 transition-all"
+                        onClick={() => openTaskModal()}
+                        className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2.5 px-4 rounded-xl text-xs font-semibold shadow-md shadow-blue-600/20 transition-all cursor-pointer"
                     >
                         <Plus size={16} strokeWidth={2.5} />
                         <span>Add New Task</span>
                     </button>
 
-                    {secondaryActions.map(({ label, Icon }) => (
-                        <button
-                            key={label}
-                            type="button"
-                            className="w-full flex items-center justify-between bg-slate-50 dark:bg-gray-800/40 hover:bg-slate-100 dark:hover:bg-gray-800 border border-slate-200/80 dark:border-gray-700/80 text-slate-700 dark:text-gray-200 py-2.5 px-3.5 rounded-xl text-xs font-medium transition-colors"
-                        >
-                            <span className="flex items-center gap-2.5">
-                                <Icon size={15} className="text-blue-600 dark:text-blue-400" />
-                                <span>{label}</span>
-                            </span>
-                            <ChevronRight size={14} className="text-slate-400" />
-                        </button>
-                    ))}
+                    <button
+                        type="button"
+                        onClick={importSampleTasks}
+                        disabled={isImporting}
+                        className="w-full flex items-center justify-between bg-slate-50 dark:bg-gray-800/40 hover:bg-slate-100 dark:hover:bg-gray-800 border border-slate-200/80 dark:border-gray-700/80 text-slate-700 dark:text-gray-200 py-2.5 px-3.5 rounded-xl text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                    >
+                        <span className="flex items-center gap-2.5">
+                            {isImporting ? (
+                                <Loader2 size={15} className="animate-spin text-blue-600 dark:text-blue-400" />
+                            ) : (
+                                <Download size={15} className="text-blue-600 dark:text-blue-400" />
+                            )}
+                            <span>{isImporting ? 'Importing...' : 'Import Sample Tasks'}</span>
+                        </span>
+                        <ChevronRight size={14} className="text-slate-400" />
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={refreshQuote}
+                        disabled={isQuoteLoading}
+                        className="w-full flex items-center justify-between bg-slate-50 dark:bg-gray-800/40 hover:bg-slate-100 dark:hover:bg-gray-800 border border-slate-200/80 dark:border-gray-700/80 text-slate-700 dark:text-gray-200 py-2.5 px-3.5 rounded-xl text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                    >
+                        <span className="flex items-center gap-2.5">
+                            <Sparkles size={15} className="text-blue-600 dark:text-blue-400" />
+                            <span>{isQuoteLoading ? 'Fetching Tip...' : 'Get New Tip'}</span>
+                        </span>
+                        <ChevronRight size={14} className="text-slate-400" />
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => navigate('/tasks')}
+                        className="w-full flex items-center justify-between bg-slate-50 dark:bg-gray-800/40 hover:bg-slate-100 dark:hover:bg-gray-800 border border-slate-200/80 dark:border-gray-700/80 text-slate-700 dark:text-gray-200 py-2.5 px-3.5 rounded-xl text-xs font-medium transition-colors cursor-pointer"
+                    >
+                        <span className="flex items-center gap-2.5">
+                            <ListTodo size={15} className="text-blue-600 dark:text-blue-400" />
+                            <span>View All Tasks</span>
+                        </span>
+                        <ChevronRight size={14} className="text-slate-400" />
+                    </button>
                 </div>
             </div>
         </div>
