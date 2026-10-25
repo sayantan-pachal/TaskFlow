@@ -159,7 +159,7 @@ export default function Settings() {
                             type="button"
                             onClick={() => setTheme(value)}
                             aria-pressed={theme === value}
-                            className={`flex min-h-[80px] flex-col items-center justify-center gap-2 rounded-xl border p-3 text-sm font-medium transition-all cursor-pointer ${
+                            className={`flex min-h-20 flex-col items-center justify-center gap-2 rounded-xl border p-3 text-sm font-medium transition-all cursor-pointer ${
                                 theme === value
                                     ? "border-blue-500 bg-blue-50/80 text-blue-700 ring-2 ring-blue-500/20 dark:bg-blue-500/15 dark:text-blue-400 dark:border-blue-500"
                                     : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-gray-700/80 dark:text-slate-300 dark:hover:bg-gray-800/50"
