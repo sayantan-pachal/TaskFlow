@@ -9,34 +9,40 @@ import {
     Trash2,
     Download,
     Settings2,
+    AlertTriangle,
 } from "lucide-react";
 import { useTasks } from "../../context/TaskContext";
 import { useToast } from "../../components/Others/ToastContext";
 
 export default function Settings() {
     const showToast = useToast();
-    const { tasks } = useTasks();
+    // Use clearAllTasks from context if available, otherwise we fallback to manual reload
+    const { tasks, clearAllTasks } = useTasks();
 
+    // UI States
+    const [showClearConfirm, setShowClearConfirm] = useState(false);
+
+    // Theme State
     const [theme, setTheme] = useState(() => {
         if (typeof window === "undefined") return "system";
         return localStorage.getItem("taskflow-theme") || "system";
     });
 
-    const [notifications, setNotifications] = useState(() => {
-        return JSON.parse(localStorage.getItem("taskflow_notifs") ?? "true");
-    });
-    const [deadlineReminders, setDeadlineReminders] = useState(() => {
-        return JSON.parse(localStorage.getItem("taskflow_deadlines") ?? "true");
-    });
-    const [weekStartsMonday, setWeekStartsMonday] = useState(() => {
-        return JSON.parse(localStorage.getItem("taskflow_monday_start") ?? "true");
-    });
+    // Preferences State
+    const [notifications, setNotifications] = useState(() => 
+        JSON.parse(localStorage.getItem("taskflow_notifs") ?? "true")
+    );
+    const [deadlineReminders, setDeadlineReminders] = useState(() => 
+        JSON.parse(localStorage.getItem("taskflow_deadlines") ?? "true")
+    );
+    const [weekStartsMonday, setWeekStartsMonday] = useState(() => 
+        JSON.parse(localStorage.getItem("taskflow_monday_start") ?? "true")
+    );
 
-    // Sync theme if changed from the header ThemeToggle component
+    // Sync theme with system and cross-component broadcasts
     useEffect(() => {
         const handleStorageChange = () => {
-            const currentTheme = localStorage.getItem("taskflow-theme") || "system";
-            setTheme(currentTheme);
+            setTheme(localStorage.getItem("taskflow-theme") || "system");
         };
 
         window.addEventListener("storage", handleStorageChange);
@@ -49,44 +55,29 @@ export default function Settings() {
     }, []);
 
     // Save preferences
-    useEffect(() => {
-        localStorage.setItem("taskflow_notifs", JSON.stringify(notifications));
-    }, [notifications]);
+    useEffect(() => localStorage.setItem("taskflow_notifs", JSON.stringify(notifications)), [notifications]);
+    useEffect(() => localStorage.setItem("taskflow_deadlines", JSON.stringify(deadlineReminders)), [deadlineReminders]);
+    useEffect(() => localStorage.setItem("taskflow_monday_start", JSON.stringify(weekStartsMonday)), [weekStartsMonday]);
 
-    useEffect(() => {
-        localStorage.setItem("taskflow_deadlines", JSON.stringify(deadlineReminders));
-    }, [deadlineReminders]);
-
-    useEffect(() => {
-        localStorage.setItem("taskflow_monday_start", JSON.stringify(weekStartsMonday));
-    }, [weekStartsMonday]);
-
-    // Theme application logic
+    // Apply theme to DOM
     useEffect(() => {
         const root = document.documentElement;
         const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
         const applyTheme = () => {
-            const isDark =
-                theme === "dark" ||
-                (theme === "system" && systemDark.matches);
-
+            const isDark = theme === "dark" || (theme === "system" && systemDark.matches);
             root.classList.toggle("dark", isDark);
             root.style.colorScheme = isDark ? "dark" : "light";
         };
 
         localStorage.setItem("taskflow-theme", theme);
         applyTheme();
-
-        // Dispatch broadcast event so other components (like navbar toggle) catch it immediately
         window.dispatchEvent(new Event("theme-change"));
 
         if (theme !== "system") return;
 
         systemDark.addEventListener("change", applyTheme);
-        return () => {
-            systemDark.removeEventListener("change", applyTheme);
-        };
+        return () => systemDark.removeEventListener("change", applyTheme);
     }, [theme]);
 
     const themeOptions = [
@@ -113,15 +104,17 @@ export default function Settings() {
         }
     };
 
-    const handleClearTasks = () => {
-        const confirmed = window.confirm(
-            "Are you sure you want to delete all saved tasks in taskflow_tasks? This action cannot be undone."
-        );
-
-        if (confirmed) {
+    const executeClearTasks = () => {
+        setShowClearConfirm(false); // Close modal
+        
+        if (clearAllTasks) {
+            // If the context function exists, use it for a seamless UI update
+            clearAllTasks();
+        } else {
+            // Fallback for hard reset
             localStorage.removeItem("taskflow_tasks");
             showToast("All tasks cleared from storage", "success");
-            setTimeout(() => window.location.reload(), 800);
+            setTimeout(() => window.location.reload(), 600);
         }
     };
 
@@ -143,9 +136,7 @@ export default function Settings() {
                         <Palette size={20} />
                     </div>
                     <div>
-                        <h2 className="font-semibold text-slate-900 dark:text-white">
-                            Appearance
-                        </h2>
+                        <h2 className="font-semibold text-slate-900 dark:text-white">Appearance</h2>
                         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                             Choose how TaskFlow looks on your device.
                         </p>
@@ -159,7 +150,7 @@ export default function Settings() {
                             type="button"
                             onClick={() => setTheme(value)}
                             aria-pressed={theme === value}
-                            className={`flex min-h-20 flex-col items-center justify-center gap-2 rounded-xl border p-3 text-sm font-medium transition-all cursor-pointer ${
+                            className={`flex min-h-[80px] flex-col items-center justify-center gap-2 rounded-xl border p-3 text-sm font-medium transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                                 theme === value
                                     ? "border-blue-500 bg-blue-50/80 text-blue-700 ring-2 ring-blue-500/20 dark:bg-blue-500/15 dark:text-blue-400 dark:border-blue-500"
                                     : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-gray-700/80 dark:text-slate-300 dark:hover:bg-gray-800/50"
@@ -179,9 +170,7 @@ export default function Settings() {
                         <Bell size={20} />
                     </div>
                     <div>
-                        <h2 className="font-semibold text-slate-900 dark:text-white">
-                            Notifications
-                        </h2>
+                        <h2 className="font-semibold text-slate-900 dark:text-white">Notifications</h2>
                         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                             Manage your notification preferences.
                         </p>
@@ -211,9 +200,7 @@ export default function Settings() {
                         <Settings2 size={20} />
                     </div>
                     <div>
-                        <h2 className="font-semibold text-slate-900 dark:text-white">
-                            Task Preferences
-                        </h2>
+                        <h2 className="font-semibold text-slate-900 dark:text-white">Task Preferences</h2>
                         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                             Personalize your calendar and task workflow.
                         </p>
@@ -227,7 +214,6 @@ export default function Settings() {
                         checked={weekStartsMonday}
                         onChange={setWeekStartsMonday}
                     />
-
                     <div className="flex items-center justify-between py-4">
                         <div>
                             <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
@@ -244,11 +230,9 @@ export default function Settings() {
 
             {/* Data & Privacy Section */}
             <section className="rounded-2xl border border-slate-200/80 bg-white p-5 dark:border-gray-800 dark:bg-[#161b22] sm:p-6 shadow-sm transition-colors">
-                <h2 className="font-semibold text-slate-900 dark:text-white">
-                    Data & Privacy
-                </h2>
+                <h2 className="font-semibold text-slate-900 dark:text-white">Data & Privacy</h2>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    Manage your locally stored task data (`taskflow_tasks`).
+                    Manage your locally stored task data.
                 </p>
 
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row">
@@ -263,7 +247,7 @@ export default function Settings() {
 
                     <button
                         type="button"
-                        onClick={handleClearTasks}
+                        onClick={() => setShowClearConfirm(true)}
                         className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50/40 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100/60 dark:border-red-900/40 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 cursor-pointer"
                     >
                         <Trash2 size={17} />
@@ -271,6 +255,41 @@ export default function Settings() {
                     </button>
                 </div>
             </section>
+
+            {/* Custom Alert Modal for Clearing Tasks */}
+            {showClearConfirm && (
+                <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="w-full max-w-sm rounded-2xl bg-white dark:bg-[#161b22] border border-slate-200 dark:border-gray-800 p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100 text-red-600 dark:bg-red-500/15 dark:text-red-500 shrink-0">
+                                <AlertTriangle size={22} strokeWidth={2.5} />
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                                Clear All Tasks?
+                            </h3>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-gray-400 mb-8 leading-relaxed">
+                            Are you sure you want to permanently delete all your saved tasks? This action cannot be undone.
+                        </p>
+                        <div className="flex items-center justify-end gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setShowClearConfirm(false)}
+                                className="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                onClick={executeClearTasks}
+                                className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-red-600 hover:bg-red-700 active:scale-95 text-white shadow-md shadow-red-600/20 transition-all"
+                            >
+                                Yes, Clear All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </main>
     );
 }
@@ -293,7 +312,7 @@ function SettingRow({ title, description, checked, onChange }) {
                 aria-checked={checked}
                 aria-label={title}
                 onClick={() => onChange(!checked)}
-                className={`relative inline-flex h-7 w-12 shrink-0 rounded-full p-1 transition-colors duration-300 ease-in-out cursor-pointer focus:outline-none ${
+                className={`relative inline-flex h-7 w-12 shrink-0 rounded-full p-1 transition-colors duration-300 ease-in-out cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                     checked
                         ? "bg-blue-600 shadow-sm shadow-blue-600/30"
                         : "bg-slate-200 dark:bg-gray-700"

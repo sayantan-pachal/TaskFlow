@@ -75,24 +75,24 @@ export default function ThemeToggle() {
             aria-checked={isDark}
             onClick={toggleTheme}
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            className="relative inline-flex items-center w-14 h-8 lg:w-16 lg:h-8 rounded-full p-0.75 cursor-pointer bg-black/5 dark:bg-white/5 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-inner transition-colors duration-300 hover:border-amber-500/40 dark:hover:border-cyan-400/40 focus:outline-none"
+            className="relative inline-flex items-center w-14 h-8 lg:w-16 lg:h-8 rounded-full p-0.75 cursor-pointer bg-slate-100 dark:bg-[#0d1117] border border-slate-200 dark:border-gray-800 shadow-inner transition-colors duration-300 hover:border-blue-300 dark:hover:border-blue-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
-            <div className="absolute inset-0 flex items-center justify-between px-2 text-slate-400 dark:text-slate-500 pointer-events-none">
-                <Sun className="w-3.5 h-3.5 text-amber-500/70" />
-                <Moon className="w-3.5 h-3.5 text-cyan-400/70" />
+            <div className="absolute inset-0 flex items-center justify-between px-2.5 text-slate-400 dark:text-gray-600 pointer-events-none">
+                <Sun className="w-3.5 h-3.5" />
+                <Moon className="w-3.5 h-3.5" />
             </div>
 
             <span
-                className={`relative z-10 w-6 h-6 rounded-full flex items-center justify-center shadow-md transform-gpu transition-all duration-300 ease-out ${
+                className={`relative z-10 w-6 h-6 rounded-full flex items-center justify-center shadow-sm transform-gpu transition-all duration-300 ease-out ${
                     isDark
-                        ? "translate-x-6 lg:translate-x-8 bg-linear-to-tr from-cyan-500 to-emerald-500 text-slate-950 shadow-cyan-500/25"
-                        : "translate-x-0 bg-linear-to-tr from-orange-500 to-amber-400 text-white shadow-orange-500/25"
+                        ? "translate-x-6 lg:translate-x-8 bg-blue-600 text-white shadow-blue-600/30 border border-blue-500"
+                        : "translate-x-0 bg-white text-slate-700 border border-slate-200"
                 }`}
             >
                 {isDark ? (
                     <Moon className="w-3.5 h-3.5 fill-current" strokeWidth={2.5} />
                 ) : (
-                    <Sun className="w-3.5 h-3.5 fill-current" strokeWidth={2.5} />
+                    <Sun className="w-3.5 h-3.5 fill-current text-amber-500" strokeWidth={2.5} />
                 )}
             </span>
         </button>

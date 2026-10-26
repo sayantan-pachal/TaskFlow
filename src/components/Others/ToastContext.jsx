@@ -9,7 +9,7 @@ export const ToastProvider = ({ children }) => {
     const showToast = useCallback((message, type = "error") => {
         setToast({ message, type, visible: true });
 
-        // Auto-hide after 3 seconds (reduced from 4 for snappier UX)
+        // Auto-hide after 3 seconds for snappier UX
         setTimeout(() => {
             setToast((prev) => ({ ...prev, visible: false }));
         }, 3000);
@@ -21,7 +21,7 @@ export const ToastProvider = ({ children }) => {
 
             {/* Global Toast UI */}
             {toast.visible && (
-                <div className="fixed top-6 left-1/2 -translate-x-1/2 z-9999 px-4 py-3 min-w-70 max-w-[90vw] rounded-2xl shadow-2xl animate-toastDrop flex items-center gap-3 bg-white dark:bg-[#161b22] border border-slate-200 dark:border-gray-800">
+                <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[9999] px-4 py-3 min-w-[280px] max-w-[90vw] rounded-2xl shadow-xl animate-in slide-in-from-top-8 fade-in duration-300 ease-out flex items-center gap-3 bg-white dark:bg-[#161b22] border border-slate-200 dark:border-gray-800">
                     
                     {/* Themed Icon Container */}
                     <div className={`flex items-center justify-center shrink-0 w-8 h-8 rounded-full ${
