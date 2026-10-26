@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      .brand-text { fill: #ffffff; }
+      @media (prefers-color-scheme: light) {
+        .brand-text { fill: #0f172a; }
+      }
+    </style>
+
+    <!-- Gradients for glassmorphism and flow -->
+    <linearGradient id="glassGradFront" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.85" />
+    </linearGradient>
+    
+    <linearGradient id="glassGradBack" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.45" />
+    </linearGradient>
+
+    <!-- Drop shadow for glass depth -->
+    <filter id="glass-shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="3" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+    
+    <!-- Soft blur for the back layer -->
+    <filter id="backdrop-blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" />
+    </filter>
+  </defs>
+
+  <!-- Logo Icon Group (Vertically centered at y=20..100) -->
+  <g transform="translate(20, 20)">
+    <!-- Back floating glass square -->
+    <rect x="20" y="20" width="60" height="60" rx="18" fill="url(#glassGradBack)" filter="url(#backdrop-blur)" />
+    
+    <!-- Front glass square -->
+    <rect x="0" y="0" width="60" height="60" rx="18" fill="url(#glassGradFront)" filter="url(#glass-shadow)" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.5" />
+    
+    <!-- Minimalist Checkmark -->
+    <path d="M 16 32 L 26 42 L 46 20" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- Typography Lockup (Aligned with Icon) -->
+  <text x="122" y="68" class="brand-text" font-family="-apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Helvetica, Arial, sans-serif" font-weight="800" font-size="50" letter-spacing="0.5">
+    Task<tspan fill="#06b6d4">Flow</tspan>
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="125" y="94" font-family="-apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-size="12" fill="#64748b" letter-spacing="2.8">
+    PRODUCTIVITY DASHBOARD
+  </text>
+</svg>
