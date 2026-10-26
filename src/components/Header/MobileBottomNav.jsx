@@ -7,6 +7,7 @@ import {
     ListTodo,
     UserRound,
 } from "lucide-react";
+import { useTasks } from "../../context/TaskContext";
 
 const navItems = [
     { to: "/", label: "Home", Icon: LayoutDashboard, end: true },
@@ -15,58 +16,61 @@ const navItems = [
     { to: "/profile", label: "Profile", Icon: UserRound },
 ];
 
-// Extracted reusable component to eliminate code duplication
 const NavItem = ({ to, label, Icon, end }) => (
     <NavLink
         to={to}
         end={end}
-        className={({ isActive }) => `flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+        className={({ isActive }) => `flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
             ${
                 isActive
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                    ? "text-blue-600 dark:text-blue-400 font-semibold"
+                    : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 font-medium"
             }`
         }
     >
         {({ isActive }) => (
             <>
                 <Icon
-                    size={21}
+                    size={20}
                     strokeWidth={isActive ? 2.4 : 1.8}
                     aria-hidden="true"
                 />
-                <span className="text-[11px] font-medium">{label}</span>
+                <span className="text-[11px] leading-none">{label}</span>
             </>
         )}
     </NavLink>
 );
 
-export default function MobileBottomNav({ onAddTask }) {
+export default function MobileBottomNav() {
+    const { openTaskModal } = useTasks();
+
     return (
         <nav
             aria-label="Mobile navigation"
-            className="md:hidden fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-[0_-8px_30px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.25)] pb-[env(safe-area-inset-bottom)]">
-            <div className="mx-auto flex h-17 max-w-lg items-center justify-around px-2">
-                
-                {/* Left side items */}
+            className="md:hidden fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/80 dark:border-gray-800 bg-white/95 dark:bg-[#0d1117]/95 backdrop-blur-xl shadow-[0_-8px_30px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.35)] pb-[env(safe-area-inset-bottom)]"
+        >
+            <div className="mx-auto flex h-16 max-w-lg items-center justify-around px-2">
+                {/* Left items: Home & Calendar */}
                 {navItems.slice(0, 2).map((item) => (
                     <NavItem key={item.to} {...item} />
                 ))}
 
-                {/* Center Add Task Button */}
-                <button
-                    type="button"
-                    onClick={onAddTask}
-                    aria-label="Add new task"
-                    className=" -mt-5 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-600/25 transition duration-200 hover:bg-blue-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950">
-                    <Plus size={25} strokeWidth={2.4} />
-                </button>
+                {/* Floating Add Task Button */}
+                <div className="flex flex-1 justify-center items-center">
+                    <button
+                        type="button"
+                        onClick={() => openTaskModal()}
+                        aria-label="Add new task"
+                        className="-mt-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-600/35 ring-4 ring-white dark:ring-[#0d1117] transition-all duration-200 hover:bg-blue-700 active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    >
+                        <Plus size={24} strokeWidth={2.5} />
+                    </button>
+                </div>
 
-                {/* Right side items */}
+                {/* Right items: Tasks & Profile */}
                 {navItems.slice(2).map((item) => (
                     <NavItem key={item.to} {...item} />
                 ))}
-                
             </div>
         </nav>
     );

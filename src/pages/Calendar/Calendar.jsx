@@ -4,9 +4,11 @@ import CalendarGrid from './Parts/CalendarGrid';
 import CalendarSchedule from './Parts/CalendarSchedule';
 
 export default function Calendar() {
-    // Initialized to October 12, 2025 to match the UI showcase design
-    const [currentMonth, setCurrentMonth] = useState(new Date(2025, 9, 1));
-    const [selectedDate, setSelectedDate] = useState(new Date(2025, 9, 12));
+    const today = new Date();
+    const [currentMonth, setCurrentMonth] = useState(
+        new Date(today.getFullYear(), today.getMonth(), 1)
+    );
+    const [selectedDate, setSelectedDate] = useState(today);
     const [activeView, setActiveView] = useState('Month');
 
     const handlePrevMonth = () => {
@@ -23,7 +25,6 @@ export default function Calendar() {
 
     const handleSelectDate = (dateObj) => {
         setSelectedDate(dateObj);
-        // If user clicks a leading/trailing date from an adjacent month, switch to that month
         if (
             dateObj.getMonth() !== currentMonth.getMonth() ||
             dateObj.getFullYear() !== currentMonth.getFullYear()
@@ -34,26 +35,23 @@ export default function Calendar() {
 
     return (
         <div className="w-full max-w-7xl mx-auto pb-8">
-            {/* Page Header */}
             <CalendarHeader
                 activeView={activeView}
                 onViewChange={setActiveView}
             />
 
-            {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                {/* Left Column: Interactive Calendar Grid (7 cols on desktop) */}
                 <div className="lg:col-span-7">
                     <CalendarGrid
                         currentMonth={currentMonth}
                         selectedDate={selectedDate}
+                        activeView={activeView}
                         onPrevMonth={handlePrevMonth}
                         onNextMonth={handleNextMonth}
                         onSelectDate={handleSelectDate}
                     />
                 </div>
 
-                {/* Right Column: Selected Day Schedule & Upcoming (5 cols on desktop) */}
                 <div className="lg:col-span-5">
                     <CalendarSchedule selectedDate={selectedDate} />
                 </div>

@@ -21,7 +21,7 @@ export default function StatsRightSidebar() {
     return (
         <div className="hidden xl:flex flex-col gap-6">
             {/* 1. Productivity Tips Card */}
-            <div className="relative overflow-hidden rounded-2xl p-5 min-h-[175px] border border-blue-100 dark:border-gray-800 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 dark:from-[#161b22] dark:via-[#172033] dark:to-[#1e1b4b] shadow-sm">
+            <div className="relative overflow-hidden rounded-2xl p-5 min-h-43.75 border border-blue-100 dark:border-gray-800 bg-linear-to-br from-blue-50 via-indigo-50 to-purple-100 dark:from-[#161b22] dark:via-[#172033] dark:to-[#1e1b4b] shadow-sm">
                 <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-3">
                         <Lightbulb size={18} className="text-amber-500 dark:text-amber-400" />

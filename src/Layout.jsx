@@ -1,42 +1,38 @@
-import React from 'react'
-import Header from './components/Header/Header'
-import MobileTopBar from './components/Header/MobileTopBar'
-import MobileBottomNav from './components/Header/MobileBottomNav'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Header from './components/Header/Header';
+import MobileTopBar from './components/Header/MobileTopBar';
+import MobileBottomNav from './components/Header/MobileBottomNav';
 import DashboardHeader from "./components/Header/DesktopTopHeader";
-import Footer from './components/Footer/Footer'
-import TaskModal from './components/Modal/AddTaskModal'
-import { Outlet } from 'react-router-dom'
+import Footer from './components/Footer/Footer';
+import TaskModal from './components/Modal/AddTaskModal';
+import ScrollToTop from './ScrollToTop';
 
-function Layout() {
+export default function Layout() {
     return (
-        <div className="flex h-screen bg-white dark:bg-slate-950/80 text-white font-sans overflow-hidden relative">
+        <div className="relative flex h-screen overflow-hidden bg-white font-sans text-slate-900 dark:bg-slate-950/80 dark:text-white">
             <Header />
             
-            {/* Main Content Area */}
-            <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-                
-                {/* Mobile Top Header (Hidden on desktop devices) */}
+            <div className="relative flex h-full flex-1 flex-col overflow-hidden">
                 <MobileTopBar />
 
-                {/* Scrollable Main Content Area */}
-                {/* Added bottom padding on mobile so content isn't hidden behind the bottom nav */}
-                <main className="flex-1 overflow-y-auto p-4 md:p-6 pb-24 md:pb-6">
+                {/* Primary Scrollable Viewport */}
+                <main 
+                    id="main-scroll-container" 
+                    className="flex-1 overflow-y-auto p-4 pb-24 md:p-6 md:pb-6"
+                >
+                    <ScrollToTop />
                     <DashboardHeader />
                     <Outlet />
                     
-                    {/* Footer sits at the bottom of the scrollable content */}
                     <div className="mt-12">
                         <Footer />
                     </div>
                 </main>
-                <TaskModal />
 
-                {/* Mobile Bottom Navigation (Hidden on desktop devices) */}
+                <TaskModal />
                 <MobileBottomNav />
-                
             </div>
         </div>
-    )
+    );
 }
-
-export default Layout

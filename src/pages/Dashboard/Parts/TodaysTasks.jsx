@@ -38,14 +38,13 @@ const getStatusBadge = (status) => {
         case 'In Progress':
             return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
         default:
-            return 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400';
+            return 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400';
     }
 };
 
 export default function TodaysTasks() {
     const { tasks, updateTask } = useTasks();
 
-    // Prioritize tasks due today; fill up to 5 rows so the dashboard stays informative
     const displayedTasks = useMemo(() => {
         const todayStr = new Date().toLocaleDateString('en-US', {
             month: 'short',
@@ -88,13 +87,13 @@ export default function TodaysTasks() {
                 </NavLink>
             </div>
 
-            {/* Desktop Table Headers */}
-            <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-slate-100 dark:border-gray-800 text-xs font-semibold text-slate-500 dark:text-gray-400">
-                <div className="col-span-5">Title</div>
-                <div className="col-span-2">Category</div>
-                <div className="col-span-2">Priority</div>
-                <div className="col-span-2">Due Date</div>
-                <div className="col-span-1 text-right">Status</div>
+            {/* Desktop Table Headers with Custom Spacing */}
+            <div className="hidden md:grid md:grid-cols-[minmax(0,1fr)_100px_80px_110px_100px] gap-4 p-4 border-b border-slate-100 dark:border-gray-800 text-xs font-semibold text-slate-500 dark:text-gray-400">
+                <div>Title</div>
+                <div className="text-center">Category</div>
+                <div className="text-center">Priority</div>
+                <div className="text-center">Due Date</div>
+                <div className="text-right">Status</div>
             </div>
 
             {/* Task List */}
@@ -109,10 +108,10 @@ export default function TodaysTasks() {
                         return (
                             <div
                                 key={task.id}
-                                className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 border-b border-slate-50 dark:border-gray-800/50 hover:bg-slate-50 dark:hover:bg-gray-800/20 transition-colors items-center"
+                                className="flex flex-col md:grid md:grid-cols-[minmax(0,1fr)_100px_80px_110px_100px] gap-3 md:gap-4 p-4 border-b border-slate-50 dark:border-gray-800/50 hover:bg-slate-50 dark:hover:bg-gray-800/30 transition-colors md:items-center"
                             >
-                                {/* Title & Checkbox */}
-                                <div className="col-span-5 flex items-start md:items-center gap-3 min-w-0">
+                                {/* Title & Checkbox (Shared) */}
+                                <div className="flex items-start md:items-center gap-3 min-w-0">
                                     <button
                                         type="button"
                                         onClick={() => handleToggle(task)}
@@ -128,34 +127,56 @@ export default function TodaysTasks() {
                                     <span
                                         className={`text-sm font-medium truncate ${
                                             isCompleted
-                                                ? 'text-slate-500 dark:text-gray-400 line-through'
+                                                ? 'text-slate-500 dark:text-gray-500 line-through'
                                                 : 'text-slate-900 dark:text-gray-200'
                                         }`}
+                                        title={task.title}
                                     >
                                         {task.title}
                                     </span>
                                 </div>
 
-                                {/* Metadata */}
-                                <div className="col-span-1 md:col-span-7 flex flex-wrap md:grid md:grid-cols-7 gap-2 md:gap-4 items-center pl-8 md:pl-0">
-                                    <div className="md:col-span-2">
-                                        <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold ${getCategoryBadge(task.category)}`}>
+                                {/* Mobile Layout (Hidden on Desktop) */}
+                                <div className="flex flex-col gap-2 pl-8 md:hidden">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${getCategoryBadge(task.category)}`}>
                                             {task.category || 'General'}
                                         </span>
-                                    </div>
-                                    <div className="md:col-span-2">
-                                        <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold ${getPriorityBadge(task.priority)}`}>
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${getPriorityBadge(task.priority)}`}>
                                             {task.priority || 'Low'}
                                         </span>
+                                        <span className="text-xs text-slate-500 dark:text-gray-400 ml-1">
+                                            {task.date}
+                                        </span>
                                     </div>
-                                    <div className="md:col-span-2 text-xs text-slate-500 dark:text-gray-400 whitespace-nowrap">
-                                        {task.date}
-                                    </div>
-                                    <div className="md:col-span-1 md:text-right">
-                                        <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold whitespace-nowrap ${getStatusBadge(task.status)}`}>
+                                    <div>
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${getStatusBadge(task.status)}`}>
                                             {task.status || 'Pending'}
                                         </span>
                                     </div>
+                                </div>
+
+                                {/* Desktop Layout (Hidden on Mobile) */}
+                                <div className="hidden md:flex justify-center min-w-0">
+                                    <span className={`px-2.5 py-1 rounded text-[10px] font-bold ${getCategoryBadge(task.category)}`}>
+                                        {task.category || 'General'}
+                                    </span>
+                                </div>
+                                
+                                <div className="hidden md:flex justify-center min-w-0">
+                                    <span className={`px-2.5 py-1 rounded text-[10px] font-bold ${getPriorityBadge(task.priority)}`}>
+                                        {task.priority || 'Low'}
+                                    </span>
+                                </div>
+                                
+                                <div className="hidden md:block text-center text-xs text-slate-500 dark:text-gray-400 truncate">
+                                    {task.date}
+                                </div>
+                                
+                                <div className="hidden md:flex justify-end min-w-0">
+                                    <span className={`px-2.5 py-1 rounded text-[10px] font-bold ${getStatusBadge(task.status)}`}>
+                                        {task.status || 'Pending'}
+                                    </span>
                                 </div>
                             </div>
                         );

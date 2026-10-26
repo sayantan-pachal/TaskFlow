@@ -4,7 +4,7 @@ import TaskCompletionTrend from './Parts/TaskCompletionTrend';
 import TaskBreakdown from './Parts/TaskBreakdown';
 import StatsRecentActivity from './Parts/StatsRecentActivity';
 import StatsRightSidebar from './Parts/StatsRightSidebar';
-import { CalendarDays, ChevronDown } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
 
 export default function Statistics() {
     const dateRangeLabel = useMemo(() => {
@@ -34,17 +34,11 @@ export default function Statistics() {
                     </p>
                 </div>
 
-                {/* Date Range Dropdown Pill */}
-                <button
-                    type="button"
-                    className="flex items-center justify-between sm:justify-start gap-2.5 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#161b22] border border-slate-200/90 dark:border-gray-800 text-xs font-semibold text-slate-700 dark:text-gray-200 shadow-sm hover:border-blue-400/60 dark:hover:border-gray-700 transition-colors"
-                >
-                    <div className="flex items-center gap-2">
-                        <CalendarDays size={15} className="text-blue-600 dark:text-blue-400 shrink-0" />
-                        <span>{dateRangeLabel}</span>
-                    </div>
-                    <ChevronDown size={15} className="text-slate-400 shrink-0" />
-                </button>
+                {/* Static Date Range Badge */}
+                <div className="flex items-center gap-2 w-full sm:w-auto px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#161b22] border border-slate-200/60 dark:border-gray-800/80 text-xs font-medium text-slate-600 dark:text-gray-300">
+                    <CalendarDays size={15} className="text-blue-600 dark:text-blue-400 shrink-0" />
+                    <span>{dateRangeLabel}</span>
+                </div>
             </div>
 
             {/* Top 4 Overview Cards */}

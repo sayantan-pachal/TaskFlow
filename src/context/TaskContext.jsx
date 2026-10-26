@@ -55,6 +55,12 @@ export const TaskProvider = ({ children }) => {
         showToast("Completed tasks cleared", "success");
     }, [showToast]);
 
+    // NEW: Function to wipe all tasks instantly across the app
+    const clearAllTasks = useCallback(() => {
+        setTasks([]);
+        showToast("All tasks cleared from storage", "success");
+    }, [showToast]);
+
     const importSampleTasks = async () => {
         if (isImporting) return;
         
@@ -82,6 +88,7 @@ export const TaskProvider = ({ children }) => {
             updateTask, 
             deleteTask, 
             clearCompleted,
+            clearAllTasks,
             importSampleTasks
         }}>
             {children}

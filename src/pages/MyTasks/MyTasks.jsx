@@ -67,17 +67,17 @@ export default function MyTasks() {
                             <button
                                 type="button"
                                 onClick={clearCompleted}
-                                className="hidden sm:flex items-center gap-1.5 border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 px-3.5 py-2.5 rounded-xl text-xs md:text-sm font-medium transition-all"
+                                className="flex items-center gap-1.5 border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 px-3.5 py-2.5 rounded-xl text-xs md:text-sm font-medium transition-all"
                             >
                                 <Trash2 size={16} />
-                                <span>Clear Completed</span>
+                                <span className="hidden sm:inline">Clear Completed</span>
                             </button>
                         )}
 
                         <button
                             type="button"
                             onClick={() => openTaskModal()}
-                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-4 py-2.5 rounded-xl text-sm font-medium shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+                            className="hidden sm:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-4 py-2.5 rounded-xl text-sm font-medium shadow-md shadow-blue-600/20 transition-all cursor-pointer"
                         >
                             <Plus size={18} strokeWidth={2.5} />
                             <span>Add Task</span>
