@@ -279,6 +279,10 @@ taskflow/
 │   │   │       └── RecentActivity.jsx
 │   │   ├── MyTasks/
 │   │   │   └── MyTasks.jsx             # Full task management, filtering & sorting
+│   │   │   └── Parts/
+│   │   │       ├── TaskList.jsx
+│   │   │       ├── TasksFilterBar.jsx
+│   │   │       └── TasksSidebar.jsx
 │   │   ├── Calendar/
 │   │   │   ├── Calendar.jsx
 │   │   │   └── Parts/
@@ -293,10 +297,7 @@ taskflow/
 │   │   │       ├── TaskBreakdown.jsx
 │   │   │       ├── StatsRecentActivity.jsx
 │   │   │       └── StatsRightSidebar.jsx
-│   │   ├── Settings/
-│   │   │   └── Settings.jsx            # Theme sync, toggles, JSON export & custom alert modal
-│   │   └── Profile/
-│   │       └── Profile.jsx
+│   │   └── Others                      # Profile.jsx & Settings.jsx
 │   ├── utils/
 │   │   └── api.js                      # StorageAPI (localStorage) & ExternalAPI (Fetch)
 │   ├── Layout.jsx                      # Master responsive viewport shell
@@ -349,6 +350,6 @@ npm run preview
 *B.Tech in Computer Science & Engineering (2nd Year)*  
 *B. P. Poddar Institute of Management and Technology (BPPIMT)*
 
-* 🌐 **Portfolio:** [sayantanpachal.me](https://sayantanpachal.me)
-* 💻 **GitHub:** [@sayantan-pachal](https://github.com/sayantan-pachal)
+* 🌐 **Portfolio:** [www.sayantanpachal.me](https://www.sayantanpachal.me)
+* 💻 **GitHub:** [sayantan-pachal](https://github.com/sayantan-pachal)
 * 🔗 **LinkedIn:** [Sayantan Pachal](https://linkedin.com/in/sayantan-pachal)
