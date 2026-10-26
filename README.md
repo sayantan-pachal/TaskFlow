@@ -38,18 +38,18 @@ Built strictly in accordance with the **GDG On Campus BPPIMT Tech Team Selection
 ### 🖥️ Desktop Experience (Dark & Light Themes)
 
 | Main Productivity Dashboard | Analytics & Statistics View |
-| :---: | :---: |
-| ![Dashboard Preview](./public/screenshots/dashboard-dark.png) | ![Statistics Preview](./public/screenshots/statistics-dark.png) |
+|:---:|:---:|
+| <img src="./public/screenshots/dashboard-dark.png" width="100%" alt="Dashboard Preview" /> | <img src="./public/screenshots/statistics-dark.png" width="100%" alt="Statistics Preview" /> |
 
 | Interactive Calendar (Month/Week/Day) | My Tasks (Filter, Sort & Manage) |
-| :---: | :---: |
-| ![Calendar Preview](./public/screenshots/calendar-view.png) | ![Tasks Preview](./public/screenshots/tasks-view.png) |
+|:---:|:---:|
+| <img src="./public/screenshots/calendar-view.png" width="100%" alt="Calendar Preview" /> | <img src="./public/screenshots/tasks-view.png" width="100%" alt="Tasks Preview" /> |
 
 ### 📱 Mobile-First Responsive Experience & Floating Overlays
 
 | Mobile Dashboard & Bottom Nav | Deadline Notification Center | Global Search Autocomplete |
-| :---: | :---: | :---: |
-| ![Mobile View](./public/screenshots/mobile-dashboard.png) | ![Notifications](./public/screenshots/notification-dropdown.png) | ![Search Autocomplete](./public/screenshots/search-dropdown.png) |
+|:---:|:---:|:---:|
+| <img src="./public/screenshots/mobile-dashboard.png" width="100%" alt="Mobile View" /> | <img src="./public/screenshots/notification-dropdown.png" width="100%" alt="Notifications" /> | <img src="./public/screenshots/search-dropdown.png" width="100%" alt="Search Autocomplete" /> |
 
 ---
 
