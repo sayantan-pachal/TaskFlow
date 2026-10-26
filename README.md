@@ -37,19 +37,68 @@ Built strictly in accordance with the **GDG On Campus BPPIMT Tech Team Selection
 
 ### 🖥️ Desktop Experience (Dark & Light Themes)
 
-| Main Productivity Dashboard | Analytics & Statistics View |
-|:---:|:---:|
-| <img src="./public/screenshots/dashboard-dark.png" width="100%" alt="Dashboard Preview" /> | <img src="./public/screenshots/statistics-dark.png" width="100%" alt="Statistics Preview" /> |
+<table>
+  <thead>
+    <tr>
+      <th width="50%">Main Productivity Dashboard</th>
+      <th width="50%">Analytics & Statistics View</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td width="50%" align="center">
+        <img src="./public/screenshots/dashboard-dark.png" alt="Dashboard Preview" width="100%" />
+      </td>
+      <td width="50%" align="center">
+        <img src="./public/screenshots/statistics-dark.png" alt="Statistics Preview" width="100%" />
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-| Interactive Calendar (Month/Week/Day) | My Tasks (Filter, Sort & Manage) |
-|:---:|:---:|
-| <img src="./public/screenshots/calendar-view.png" width="100%" alt="Calendar Preview" /> | <img src="./public/screenshots/tasks-view.png" width="100%" alt="Tasks Preview" /> |
+<table>
+  <thead>
+    <tr>
+      <th width="50%">Interactive Calendar (Month/Week/Day)</th>
+      <th width="50%">My Tasks (Filter, Sort & Manage)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td width="50%" align="center">
+        <img src="./public/screenshots/calendar-view.png" alt="Calendar Preview" width="100%" />
+      </td>
+      <td width="50%" align="center">
+        <img src="./public/screenshots/tasks-view.png" alt="Tasks Preview" width="100%" />
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### 📱 Mobile-First Responsive Experience & Floating Overlays
 
-| Mobile Dashboard & Bottom Nav | Deadline Notification Center | Global Search Autocomplete |
-|:---:|:---:|:---:|
-| <img src="./public/screenshots/mobile-dashboard.png" width="100%" alt="Mobile View" /> | <img src="./public/screenshots/notification-dropdown.png" width="100%" alt="Notifications" /> | <img src="./public/screenshots/search-dropdown.png" width="100%" alt="Search Autocomplete" /> |
+<table>
+  <thead>
+    <tr>
+      <th width="33.33%">Mobile Dashboard & Bottom Nav</th>
+      <th width="33.33%">Deadline Notification Center</th>
+      <th width="33.33%">Global Search Autocomplete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td width="33.33%" align="center">
+        <img src="./public/screenshots/mobile-dashboard.png" alt="Mobile View" width="100%" />
+      </td>
+      <td width="33.33%" align="center">
+        <img src="./public/screenshots/notification-dropdown.png" alt="Notifications" width="100%" />
+      </td>
+      <td width="33.33%" align="center">
+        <img src="./public/screenshots/search-dropdown.png" alt="Search Autocomplete" width="100%" />
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
