@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calendar as CalendarIcon } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useTasks } from '../../context/TaskContext';
 import CustomDropdown from '../Others/CustomDropdown';
 
@@ -45,17 +45,25 @@ export default function AddTaskModal() {
     });
     const [error, setError] = useState('');
 
+    // Safely determine if this is an actual edit vs a pre-filled new task (from calendar)
+    const isEditMode = Boolean(editingTask?.id);
+
     useEffect(() => {
         if (editingTask) {
-            const parsedDate = editingTask.rawDate || getTodayInputString();
+            // This handles BOTH genuine edits AND pre-filled new tasks (from Calendar)
+            const parsedCategory = (editingTask.category === 'Sample' || editingTask.category === 'User Sample') 
+                ? 'Personal' 
+                : (editingTask.category || 'Academics');
+
             setFormData({
                 title: editingTask.title || '',
-                category: editingTask.category === 'Sample' ? 'Personal' : (editingTask.category || 'Academics'),
+                category: parsedCategory,
                 priority: editingTask.priority || 'Medium',
                 status: editingTask.status || 'Pending',
-                rawDate: parsedDate,
+                rawDate: editingTask.rawDate || getTodayInputString(),
             });
         } else {
+            // Completely fresh task
             setFormData({
                 title: '',
                 category: 'Academics',
@@ -92,7 +100,8 @@ export default function AddTaskModal() {
             checked: formData.status === 'Completed',
         };
 
-        if (editingTask) {
+        // STRICT CHECK: Only update if it actually has an ID
+        if (isEditMode) {
             updateTask(editingTask.id, payload);
         } else {
             addTask(payload);
@@ -102,11 +111,11 @@ export default function AddTaskModal() {
     };
 
     return (
-        <div className="fixed inset-0 z-999 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="w-full max-w-md rounded-2xl bg-white dark:bg-[#161b22] border border-slate-200 dark:border-gray-800 p-6 shadow-2xl">
                 <div className="flex items-center justify-between mb-5">
                     <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                        {editingTask ? 'Edit Task' : 'Add New Task'}
+                        {isEditMode ? 'Edit Task' : 'Add New Task'}
                     </h2>
                     <button
                         type="button"
@@ -183,15 +192,15 @@ export default function AddTaskModal() {
                         <button
                             type="button"
                             onClick={closeTaskModal}
-                            className="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors"
+                            className="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-md shadow-blue-600/20 transition-all"
+                            className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-md shadow-blue-600/20 transition-all cursor-pointer"
                         >
-                            {editingTask ? 'Save Changes' : 'Create Task'}
+                            {isEditMode ? 'Save Changes' : 'Create Task'}
                         </button>
                     </div>
                 </form>
