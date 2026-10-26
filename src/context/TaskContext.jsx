@@ -55,10 +55,28 @@ export const TaskProvider = ({ children }) => {
         showToast("Completed tasks cleared", "success");
     }, [showToast]);
 
-    // NEW: Function to wipe all tasks instantly across the app
     const clearAllTasks = useCallback(() => {
         setTasks([]);
         showToast("All tasks cleared from storage", "success");
+    }, [showToast]);
+
+    // NEW: Function to import tasks from a user-provided JSON file
+    const importUserTasks = useCallback((importedTasks) => {
+        if (!Array.isArray(importedTasks)) {
+            showToast("Invalid format. Expected a JSON array.", "error");
+            return;
+        }
+        
+        const processedTasks = importedTasks.map(task => ({
+            ...task,
+            id: crypto.randomUUID(), // Prevent ID collisions with existing tasks
+            category: task.category === 'Sample' ? 'User Sample' : (task.category || 'Imported'),
+            status: task.status || 'Pending',
+            isSample: false
+        }));
+
+        setTasks(prev => [...processedTasks, ...prev]);
+        showToast(`${processedTasks.length} tasks imported successfully`, "success");
     }, [showToast]);
 
     const importSampleTasks = async () => {
@@ -89,7 +107,8 @@ export const TaskProvider = ({ children }) => {
             deleteTask, 
             clearCompleted,
             clearAllTasks,
-            importSampleTasks
+            importSampleTasks,
+            importUserTasks
         }}>
             {children}
         </TaskContext.Provider>

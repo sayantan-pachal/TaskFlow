@@ -38,7 +38,7 @@ export default function DashboardHeader() {
       </div>
 
       {/* Mobile search input */}
-      <div className="mt-4 sm:hidden relative z-40">
+      <div className="mt-4 sm:hidden relative z-20">
         <SearchBar />
       </div>
     </header>

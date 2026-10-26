@@ -150,7 +150,7 @@ export default function Settings() {
                             type="button"
                             onClick={() => setTheme(value)}
                             aria-pressed={theme === value}
-                            className={`flex min-h-[80px] flex-col items-center justify-center gap-2 rounded-xl border p-3 text-sm font-medium transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                            className={`flex min-h-20 flex-col items-center justify-center gap-2 rounded-xl border p-3 text-sm font-medium transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                                 theme === value
                                     ? "border-blue-500 bg-blue-50/80 text-blue-700 ring-2 ring-blue-500/20 dark:bg-blue-500/15 dark:text-blue-400 dark:border-blue-500"
                                     : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-gray-700/80 dark:text-slate-300 dark:hover:bg-gray-800/50"
@@ -258,7 +258,7 @@ export default function Settings() {
 
             {/* Custom Alert Modal for Clearing Tasks */}
             {showClearConfirm && (
-                <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+                <div className="fixed inset-0 z-999 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
                     <div className="w-full max-w-sm rounded-2xl bg-white dark:bg-[#161b22] border border-slate-200 dark:border-gray-800 p-6 shadow-2xl animate-in zoom-in-95 duration-200">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100 text-red-600 dark:bg-red-500/15 dark:text-red-500 shrink-0">
