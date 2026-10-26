@@ -11,8 +11,8 @@
   [![React](https://img.shields.io/badge/React-19.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
   [![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-  [![LocalStorage](https://img.shields.io/badge/Storage-Local--First-10B981?style=for-the-badge&logo=databricks&logoColor=white)(#data-persistence--storage-schema)
-  [![Pure Web Eng](https://img.shields.io/badge/AI%2FML-Zero%20(100%25%20Core%20Web)-F59E0B?style=for-the-badge)(#objective--engineering-constraints)
+  [![LocalStorage](https://img.shields.io/badge/Storage-Local--First-10B981?style=for-the-badge&logo=databricks&logoColor=white)](#data-persistence--storage-schema)
+  [![Pure Web Eng](https://img.shields.io/badge/AI%2FML-Zero%20(100%25%20Core%20Web)-F59E0B?style=for-the-badge)](#objective--engineering-constraints)
 
   [Live Demo](https://taskflowsp.vercel.app/) • [Report Bug](https://github.com/sayantan-pachal/taskflow/issues) • [Request Feature](https://github.com/sayantan-pachal/taskflow/issues)
 
@@ -160,7 +160,7 @@ sequenceDiagram
    * Built-in `ToastContext` provides animated slide-down feedback (`success` and `error` states) for all CRUD actions, JSON exports, and network failures.
 
 ### 🚀 Advanced & Bonus Features Implemented
-* ** Tri-State Theme Synchronization (`Light` / `Dark` / `System`):** Synchronizes the navbar `ThemeToggle` switch and the `Settings` page in real time using custom DOM events (`theme-change`) and `window.matchMedia('(prefers-color-scheme: dark)')`.
+* **Tri-State Theme Synchronization (`Light` / `Dark` / `System`):** Synchronizes the navbar `ThemeToggle` switch and the `Settings` page in real time using custom DOM events (`theme-change`) and `window.matchMedia('(prefers-color-scheme: dark)')`.
 * **📈 Interactive Smooth Bezier Curve Analytics:** Custom zero-dependency SVG charts (`TaskOverview` and `TaskCompletionTrend`) featuring dynamic Y-axis scaling, Cubic Bezier curve smoothing, gradient area fills, crosshairs, and floating hover tooltips.
 * **🔔 Smart Deadline Notification Center:** A floating bell dropdown (`Notification.jsx`) that scans incomplete tasks due within 3 days, categorizes them as **Overdue**, **Due Today**, **Due Tomorrow**, or **Upcoming**, and sorts them by urgency and priority.
 * **📅 Interactive Multi-View Calendar:** Supports **Month**, **Week**, and **Day** views, priority-colored indicator dots on calendar cells, dynamic **Start Week on Monday/Sunday** configuration, and direct task scheduling per date.
